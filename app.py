@@ -10,19 +10,25 @@ r = redis.Redis()
 @app.route('/url', methods=['GET', 'POST'])
 def url_to_hash():
     url = request.args['url']
-    if r.exists(url) == 0:
-        code = hash(url)
-        r.set(url, code)
-        r.set(code, url)
-    return json.jsonify({url: r.get(url).decode('utf-8')})
+    if not re.search('\w+\.\w+', url):
+        return json.jsonify({'Была введена некорректная ссылка': url})
+    else:
+        if r.exists(url) == 0:
+            code = hash(url)
+            r.set(url, code)
+            r.set(code, url)
+        return json.jsonify({url: r.get(url).decode('utf-8')})
 
 
 @app.route('/code', methods=['GET', 'POST'])
 def to_website():
-    url = r.get(request.args['code']).decode('utf-8')
-    if not re.findall(r'https://\w+.\w+', url):
-        url = 'https://' + url
-    return redirect(url, code=302)
+    if r.exists(request.args['code']):
+        url = r.get(request.args['code']).decode('utf-8')
+        if not re.findall(r'https://\w+\.\w+', url):
+            url = 'https://' + url
+        return redirect(url, code=302)
+    else:
+        return json.jsonify({'Данного кода не существует в базе данных': request.args['code']})
 
 
 if __name__ == '__main__':
