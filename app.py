@@ -20,7 +20,7 @@ def url_to_hash():
 @app.route('/code', methods=['GET', 'POST'])
 def to_website():
     url = r.get(request.args['code']).decode('utf-8')
-    if re.findall(r'https://\w+.\w+', url) == []:
+    if not re.findall(r'https://\w+.\w+', url):
         url = 'https://' + url
     return redirect(url, code=302)
 
