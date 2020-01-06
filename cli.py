@@ -9,6 +9,12 @@ import click
               help='The key of the url recorded in DB, the address of which you need to display')
 def func(url, redirect):
     with app.app_context():
+        if not url and not redirect:
+            click.echo('Specify the function you need. If you are at a loss, select the "--help" flag')
+            return
+        else:
+            click.echo('Specify one of two functions, not both!')
+            return
         if url:
             click.echo(cli_encode(url))
         if redirect:
