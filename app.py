@@ -22,7 +22,7 @@ def encode(url):
                          code: url})
         else:
             code = _redis.get(url)
-        return [url, code]
+        return [url, str(code)]
 
 
 def decode_func(code):
@@ -36,7 +36,7 @@ def decode_func(code):
 @app.route('/url/<url>', methods=['POST'])
 def web_encode(url):
     answer = encode(url)
-    if isinstance(answer, unicode):
+    if isinstance(answer, str):
         return answer
     else:
         return jsonify(code=answer[1], url=answer[0])
@@ -45,9 +45,12 @@ def web_encode(url):
 @app.route('/<int:code>', methods=['GET'])
 def web_decode(code):
     answer = decode_func(code)
-    if isinstance(answer, unicode):
+    print('asd1')
+    if isinstance(answer, str):
+        print('asd2')
         return answer
     else:
+        print('asd3')
         return redirect(answer[0].decode('utf-8'))
 
 
