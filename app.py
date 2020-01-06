@@ -45,12 +45,9 @@ def web_encode(url):
 @app.route('/<int:code>', methods=['GET'])
 def web_decode(code):
     answer = decode_func(code)
-    print('asd1')
     if isinstance(answer, str):
-        print('asd2')
         return answer
     else:
-        print('asd3')
         return redirect(answer[0].decode('utf-8'))
 
 
