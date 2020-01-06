@@ -8,7 +8,7 @@ app = Flask(__name__)
 _redis = redis.Redis()
 
 
-@app.route('/url', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def url_to_hash():
     url = request.args['url']
     if not re.search('\w+\.\w+', url):
@@ -23,13 +23,13 @@ def url_to_hash():
         return json.jsonify({url: _redis.get(url).decode('utf-8')})
 
 
-@app.route('/code', methods=['GET', 'POST'])
-def to_website():
-    if _redis.exists(request.args['code']):
-        url = _redis.get(request.args['code']).decode('utf-8')
+@app.route('/<int:code>', methods=['GET', 'POST'])
+def to_website(code):
+    if _redis.exists(code):
+        url = _redis.get(code)
         return redirect(url, code=302)
     else:
-        return json.jsonify({'Данного кода не существует в базе данных': request.args['code']})
+        return json.jsonify({'Данного кода не существует в базе данных': code})
 
 
 if __name__ == '__main__':
