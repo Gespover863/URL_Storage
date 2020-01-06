@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request, json, redirect
+import random
 import redis
 import re
 
@@ -16,7 +17,7 @@ def url_to_hash():
         if not _redis.exists(url):
             if not re.findall(r'https?://\w+\.\w+', url):
                 url = 'https://' + url
-            code = hash(url)
+            code = random.randint(100000000, 999999999)
             _redis.set(url, code)
             _redis.set(code, url)
         return json.jsonify({url: _redis.get(url).decode('utf-8')})
