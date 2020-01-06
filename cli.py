@@ -4,8 +4,9 @@ import click
 
 
 @click.command()
-@click.option('--url', type=str)  # Need typing used
-@click.option('--redirect', type=str)
+@click.option('--url', type=str, help='The URL that should be encoded and written to the DB')
+@click.option('--redirect', type=str,
+              help='The key of the url recorded in DB, the address of which you need to display')
 def func(url, redirect):
     with app.app_context():
         if url:

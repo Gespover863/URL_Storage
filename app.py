@@ -42,7 +42,7 @@ def web_encode(url):
         return jsonify(code=answer[1], url=answer[0])
 
 
-@app.route('/<int:code>', methods=['POST', 'GET'])
+@app.route('/<int:code>', methods=['GET'])
 def web_decode(code):
     answer = decode_func(code)
     if isinstance(answer, unicode):
