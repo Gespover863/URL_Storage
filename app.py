@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from flask import Flask
-from flask import redirect, jsonify
+from flask import redirect
 import random
 import redis
 import re
@@ -22,49 +22,41 @@ def encode(url):
                          code: url})
         else:
             code = _redis.get(url)
-        return [url, str(code)]
+        return {'url': url.encode('utf-8'), 'code': str(code)}
 
 
-def decode_func(code):
+def decode(code):
     if _redis.exists(code):
-        url = _redis.get(code)
-        return [url.decode('utf-8'), '']
+        url = _redis.get(code).decode('utf-8')
+        return url
     else:
         return 'error: This code does not exist - %s' % code
 
 
 @app.route('/url/<url>', methods=['POST'])
 def web_encode(url):
-    answer = encode(url)
-    if isinstance(answer, str):
-        return answer
-    else:
-        return jsonify(code=answer[1], url=answer[0])
+    dict_result = encode(url)
+    return dict_result
 
 
 @app.route('/<int:code>', methods=['GET'])
 def web_decode(code):
-    answer = decode_func(code)
-    if isinstance(answer, str):
-        return answer
+    string_result = decode(code)
+    if re.match('error', string_result):
+        return string_result
     else:
-        return redirect(answer[0].decode('utf-8'))
+        return redirect(string_result)
 
 
-def cli_encode(url):
-    answer = encode(url)
-    if isinstance(answer, unicode):
-        return answer
+def cli_interface(url_or_code, func):
+    if func == 'encode':
+        dict_result = encode(url_or_code)
+        return dict_result
+    elif func == 'decode':
+        string_result = decode(url_or_code)
+        return string_result
     else:
-        return '%s %s' % (answer[0], answer[1])
-
-
-def cli_decode(code):
-    answer = decode_func(code)
-    if isinstance(answer, unicode):
-        return answer
-    else:
-        return '%s %s' % (answer[0], answer[1])
+        return 'Something incredible just happened.'
 
 
 if __name__ == '__main__':

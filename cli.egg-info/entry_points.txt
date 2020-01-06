@@ -1,4 +1,4 @@
 
         [console_scripts]
-        cli=cli:func 
+        cli=cli:cli
     
