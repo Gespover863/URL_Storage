@@ -1,10 +1,14 @@
+from flask import Flask
+from flask import redirect, request
 from core import encode, decode
-from flask import redirect
 import re
 
+app = Flask(__name__)
 
-@app.route('/url/<url>', methods=['POST'])
-def web_encode(url):
+
+@app.route('/url', methods=['POST'])
+def web_encode():
+    url = request.form.get('url')
     return encode(url)
 
 
@@ -15,3 +19,7 @@ def web_decode(code):
         return url
     else:
         return redirect(url)
+
+
+if __name__ == '__main__':
+    app.run()

@@ -1,10 +1,8 @@
-from flask import Flask
 from redis import Redis
 import random
 import string
 import re
 
-app = Flask(__name__)
 redis = Redis()
 
 
@@ -29,7 +27,3 @@ def decode(code):
         return url
     else:
         return 'error: This code does not exist - %s' % code
-
-
-if __name__ == '__main__':
-    app.run()

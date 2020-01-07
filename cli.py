@@ -18,9 +18,11 @@ def cli(url, redirect):
 
 
 def cli_interface(url_or_code, func):
-    if func == 'encode':
-        return encode(url_or_code)
-    elif func == 'decode':
-        return decode(url_or_code)
-    else:
-        return 'Something incredible just happened.'
+    with app.app_context():
+        if func == 'encode':
+            g.url = url_or_code
+            return encode(url_or_code)
+        elif func == 'decode':
+            return decode(url_or_code)
+        else:
+            return 'Something incredible just happened.'
