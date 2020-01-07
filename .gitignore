@@ -2,3 +2,5 @@
 __pycache__/
 venv/
 cli.egg-info/
+app.pyc
+core.pyc

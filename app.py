@@ -12,7 +12,7 @@ def web_encode():
     return encode(url)
 
 
-@app.route('/<int:code>', methods=['GET'])
+@app.route('/<string:code>', methods=['GET'])
 def web_decode(code):
     url = decode(code)
     if re.match('error', url):
