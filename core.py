@@ -1,6 +1,7 @@
 from flask import Flask
-import random
 from redis import Redis
+import random
+import string
 import re
 
 app = Flask(__name__)
@@ -14,7 +15,7 @@ def encode(url):
         if not re.findall(r'https?://\w+\.\w+', url):
             url = 'https://' + url
         if not redis.exists(url):
-            code = random.randint(100000, 999999)
+            code = ''.join(random.choice(string.ascii_letters) for _ in range(6))
             redis.mset({url: code,
                         code: url})
         else:
