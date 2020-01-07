@@ -1,3 +1,4 @@
 .idea/
 __pycache__/
 venv/
+cli.egg-info/
