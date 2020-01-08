@@ -9,10 +9,9 @@ app = Flask(__name__)
 def web_encode():
     url = request.form.get('url')
     try:
-        data = encode(url).split(' - ')
+        code = encode(url)
         return {
-            'url': data[0],
-            'code': data[1]
+            'code': code
         }
     except Exception as error:
         return str(error)

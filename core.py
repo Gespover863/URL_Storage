@@ -18,7 +18,7 @@ def encode(url):
                         code: url})
         else:
             code = redis.get(url)
-        return '%s - %s' % (url.encode('utf-8'), str(code))
+        return str(code)
 
 
 def decode(code):
