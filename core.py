@@ -8,7 +8,7 @@ redis = Redis()
 
 def encode(url):
     if not re.search('\w+\.\w+', url):
-        return 'error: This url is non-correct - %s' % url
+        raise Exception('error: This url is non-correct - %s' % url)
     else:
         if not re.findall(r'https?://\w+\.\w+', url):
             url = 'https://' + url
@@ -18,7 +18,7 @@ def encode(url):
                         code: url})
         else:
             code = redis.get(url)
-        return {'url': url.encode('utf-8'), 'code': str(code)}
+        return '%s - %s' % (url.encode('utf-8'), str(code))
 
 
 def decode(code):
@@ -26,4 +26,4 @@ def decode(code):
         url = redis.get(code).decode('utf-8')
         return url
     else:
-        return 'error: This code does not exist - %s' % code
+        raise Exception('error: This code does not exist - %s' % code)

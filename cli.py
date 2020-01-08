@@ -12,15 +12,6 @@ def cli(url, redirect):
     if url and redirect:
         return click.echo('Specify one of two functions, not both!')
     if url:
-        return click.echo(cli_interface(url, 'encode'))
+        return click.echo(encode(url))
     if redirect:
-        return click.echo(cli_interface(redirect, 'decode'))
-
-
-def cli_interface(url_or_code, func):
-    if func == 'encode':
-        return encode(url_or_code)
-    elif func == 'decode':
-        return decode(url_or_code)
-    else:
-        return 'Something incredible just happened.'
+        return click.echo(decode(redirect))
