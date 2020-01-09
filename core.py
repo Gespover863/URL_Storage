@@ -4,7 +4,7 @@ import string
 import re
 import os
 
-redis = from_url(os.environ.get('REDISCLOUD_URL', 'unix://localhost:6379/'))
+redis = from_url(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6379/'))
 
 def encode(url):
     if not re.search('\w+\.\w+', url):
