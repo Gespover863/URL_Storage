@@ -1,10 +1,10 @@
-from redis import Redis
+from redis import from_url
 import random
 import string
 import re
+import os
 
-redis = Redis()
-
+redis = from_url(os.environ.get('localhost:6379'))
 
 def encode(url):
     if not re.search('\w+\.\w+', url):
