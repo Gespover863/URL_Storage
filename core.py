@@ -1,7 +1,7 @@
 from redis import Redis  # , from_url
 import random
 import string
-from urlparse import urlparse
+import urlparse
 import re
 import os
 
