@@ -1,10 +1,18 @@
-from redis import from_url
+from redis import Redis  # , from_url
 import random
 import string
+from urlparse import urlparse
 import re
 import os
 
-redis = from_url(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6379/'))
+redis_url = os.getenv('REDISTOGO_URL')
+urlparse.uses_netloc.append('redis')
+url = urlparse.urlparse('redis://localhost:6379/')
+
+redis = Redis(host=url.hostname, port=url.port, db=0, password=url.password)
+
+
+# redis = from_url(os.environ.get('REDISCLOUD_URL', 'redis://localhost:6379/'))
 
 def encode(url):
     if not re.search('\w+\.\w+', url):
